@@ -125,10 +125,10 @@ const getTheatesAndShowsByMovieId = async (req,res)=>{
     try{
 
         const movieId = req.params.movieId;
-        const showDate = req.query.showDate;
+        const showDate1 = req.query.showDate;
 
         console.log(movieId);
-        console.log(showDate);
+        console.log(showDate1);
 
 
         if(!mongoose.Types.ObjectId.isValid(movieId)){
@@ -151,21 +151,56 @@ const getTheatesAndShowsByMovieId = async (req,res)=>{
 
         };
 
-        const allShows = await ShowModel.find({movie:movieId}).populate('theatre').populate('movie');
+        // const allShows2 = await ShowModel.find({movie:movieId})
+        // console.log(allShows2);
+
+        const targetdate= new Date(showDate1);
+
+        //const start = new Date(`${showDate1}T00:00:00.000Z`)
+        const startDate= new Date(showDate1);
+        startDate.setUTCHours(0,0,0,0);
+        //const end = new Date(`${showDate1}T23:59:59.999Z`)
+        const endDate=new Date(showDate1);
+        endDate.setUTCHours(23,59,59,999);
+
+
+
+        // console.log(startDate);
+        // console.log(endDate);
+
+        const allShows = await ShowModel.find({
+        movie: movieId,
+        showDate: {
+        $gte: startDate,
+        $lte: endDate
+        }
+        }).populate('theatre').populate('movie');
+        // console.log(allShows);
 
         let showsByTheatreId = {};
 
         allShows.forEach((show)=>{
 
+            console.log(show.showTime+" "+show.theatre._id);
+
             const theatreId= show.theatre._id;
 
-            if(!show[theatreId]){
+            if(showsByTheatreId[theatreId]==null){
                 showsByTheatreId[theatreId] = [];
+                //showsByTheatreId[theatreId].push(show);
+                //console.log(showsByTheatreId);
+                console.log("1");
             }
 
+          
+            console.log("2");
             showsByTheatreId[theatreId].push(show);
+            console.log("3");
+            
 
         })
+
+        console.log(showsByTheatreId);
 
 
         return res.status(200).send({

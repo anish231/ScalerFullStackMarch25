@@ -9,9 +9,11 @@ const initialiseMovieRoutes = (app)=>{
     
     app.get("/movies/:id", [verifyToken] ,getMovieDetails);
 
-    app.post("/movies", [verifyToken, verifyAdmin] ,createMovie);
+    app.post("/movies",[verifyToken, verifyAdmin] ,createMovie);
 
 }
+
+
 
 module.exports = initialiseMovieRoutes;
 

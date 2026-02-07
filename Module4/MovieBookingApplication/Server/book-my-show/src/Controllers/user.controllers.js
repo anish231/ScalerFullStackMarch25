@@ -86,20 +86,28 @@ const registerUser = async (req,res)=>{
         }
 
         const hashedPassword = bcrypt.hashSync(password, 10);
+        
 
         req.body.password = hashedPassword;
+
+       
 
 
         const newUser = new UserModel(req.body);
 
+        
+         
+
         await newUser.save();
+
+      
 
 
         return res.status(201).send({success:true,message:"Registration Success, Please login to continue"});
 
     }
     catch(err){
-        return res.status(500).send({message:"Internal Server Error"})
+        return res.status(500).send({message:"Internal Server Error"+err})
     }
     
 

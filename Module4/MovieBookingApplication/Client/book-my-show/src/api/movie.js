@@ -3,6 +3,7 @@ import { axiosInstance } from "./axiosInstance";
 export const FetchAllMovies = async ()=>{
 
     console.log(process.env);
+    console.log("hello ani");
 
 
     try{
