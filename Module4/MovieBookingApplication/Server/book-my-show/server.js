@@ -29,7 +29,10 @@ mongoose.connect(process.env.DB_URL)
 })
 
 
-app.use(cors());
+app.use(cors({
+  origin: "https://moviebookingapp2.netlify.app/",
+  credentials: true
+}));
 
 
 
