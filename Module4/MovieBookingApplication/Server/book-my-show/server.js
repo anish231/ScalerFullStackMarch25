@@ -28,12 +28,14 @@ mongoose.connect(process.env.DB_URL)
     console.log(err);
 })
 
+app.options("*", cors());
+
 
 app.use(cors({
   origin: "https://moviebookingapp2.netlify.app",
   credentials: true,
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization"]
+  allowedHeaders: ["Content-Type", "Authorization", "x-access-token"]
 }));
 
 
